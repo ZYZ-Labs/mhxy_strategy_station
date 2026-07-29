@@ -2,6 +2,8 @@
 
 ## 当前状态
 
+- 超管初始化兼容缺陷已完成本地根因修复：密码 KDF 改为 Workers 支持的 PBKDF2
+  100,000 次，并新增 `0002` migration 同步数据库约束，待生产部署验证。
 - 生产 500 根因修复已推送：部署命令现会在发布前执行远端 D1 migration。
   `https://mhxy.silvericekey.fun/` 仍待认证环境执行新部署；当前 `/` 和 `/rules`
   返回 500，`/api/health` 返回 200。
@@ -20,7 +22,7 @@
   Wrangler 技术基线。
 - 已实现 23 个 React Router 路由、D1 初始 migration、账号与会话、唯一超管、
   阈值/定时注册、攻略修订、规则预审、人工终审、管理员后台和只读 MCP。
-- 本地 D1 migration、17 条单元测试、lint、typecheck、生产构建和 Wrangler
+- 本地 D1 migration、20 条单元测试、lint、typecheck、生产构建和 Wrangler
   dry-run 均通过。
 - 首页、注册、初始化和健康检查 HTTP 验收通过；MCP `initialize` 与 `tools/list`
   响应通过；首页 1440×1100 Chrome 截图人工检查通过。
@@ -32,6 +34,14 @@
 
 ## 最近关键结论
 
+- PBKDF2 异常发生在密码派生阶段，早于超管写入；不是密码内容或
+  `BOOTSTRAP_TOKEN` 配置错误。
+- 只改 TypeScript 会被 `0001` 中 `password_iterations >= 600000` 拒绝，因此必须
+  保留历史 migration 并新增兼容 migration 重建 `users` 约束。
+- D1 实测否决“重命名旧 users”迁移：子表外键会被改写到旧表。最终迁移只允许空
+  `users` 原子替换；存在旧账户时在删表前失败关闭，避免账号或关联数据损坏。
+- 全新隔离 D1 已连续应用 `0001` 和 `0002`；`foreign_key_check` 无结果，
+  `sessions` 与 `content_entries` 仍引用 `users`，三个业务索引均存在。
 - 500 只发生在访问 D1 的页面链路；纯 Worker 健康接口正常。部署产物已上线，
   但现有 `worker:deploy` 只构建和部署，没有执行 `db:migrate:remote`。
 - 修复边界限定为部署顺序：构建 → 远端 D1 migration → Wrangler 部署，并增加
@@ -46,8 +56,8 @@
 
 ## 下一步
 
-1. 获得 Cloudflare API Token 后创建/绑定项目专属 D1、执行远端 migration、
-   配置 `BOOTSTRAP_TOKEN` 并部署。
+1. 在具备 Cloudflare API Token 的构建环境执行 `npm run worker:deploy`，应用
+   `0002` 并部署后重试 `/setup`。
 2. 由用户提供真实攻略验收样本和首个超管凭据后，执行完整投稿审核回放。
 3. 生产部署后补充线上联调报告。
 

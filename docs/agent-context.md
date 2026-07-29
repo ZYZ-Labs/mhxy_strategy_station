@@ -4,7 +4,8 @@
 
 - 设计并实现一个部署到 Cloudflare Workers 的梦幻西游攻略与交流站。
 - 当前阶段：第一期 MVP 已部署到 `https://mhxy.silvericekey.fun`。部署流程遗漏
-  远端 D1 migration 的根因修复已推送；线上仍待有 Cloudflare 凭据的环境执行部署。
+  远端 D1 migration 的根因修复已推送；超管初始化的 PBKDF2 兼容修复已完成本地
+  验证，待具备 Cloudflare 凭据的环境部署。
 
 ## 已确认边界
 
@@ -36,7 +37,7 @@
 
 - Worker：`workers/app.ts`
 - 路由：`app/routes.ts`
-- D1 migration：`migrations/0001_initial.sql`
+- D1 migration：`migrations/0001_initial.sql`、`migrations/0002_pbkdf2_workers_compatibility.sql`
 - MCP：`app/mcp/server.ts`
 - Worker 部署：`npm run worker:deploy`（构建 → 远端 D1 migration → 部署）；
   `npm run worker:deploy:dry-run` 不连接远端，`npm run deploy` 为兼容别名。
@@ -57,6 +58,9 @@
   检查远端表结构、执行 migration 或重新部署。
 - GitHub 仓库没有 Actions workflow，也没有配置 repository secrets，因此推送不会
   自动执行 Cloudflare migration 或部署。
+- 密码 KDF 已改为 Workers 可执行的 PBKDF2-SHA256 100,000 次，并由 `0002`
+  migration 同步 `users.password_iterations` 约束；生产仍需应用 migration 和新
+  Worker 后才能重新验证 `/setup`。
 - 线上 `/api/health` 返回 200，而所有经过共享页面布局的 `/`、`/rules` 返回 500；
   布局的首个强制依赖是 D1 注册策略。当前 `worker:deploy` 又没有执行远端 migration，
   因此根因定位为生产 schema 未随部署同步；远端表结构仍需在获得认证后复核。

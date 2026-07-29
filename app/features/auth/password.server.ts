@@ -5,7 +5,7 @@ import {
 } from "~/lib/crypto";
 
 const textEncoder = new TextEncoder();
-export const PASSWORD_ITERATIONS = 600_000;
+export const PASSWORD_ITERATIONS = 100_000;
 
 async function derivePassword(
   password: string,

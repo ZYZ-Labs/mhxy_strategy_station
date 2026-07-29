@@ -14,7 +14,9 @@ npm run dev
 ## 2. 首次初始化
 
 1. 在 Worker 环境配置 `BOOTSTRAP_TOKEN`。
-2. 确认 D1 `users` 表为空。
+2. 执行全部 D1 migration，并确认 `users` 表为空。`0002` 将密码参数约束调整为
+   Workers 支持的 PBKDF2-SHA256 100,000 次；若存在旧账户会失败关闭，不得通过
+   伪造迭代次数绕过。
 3. 访问 `GET /setup`，提交 token、用户名、显示名和至少 12 位密码。
 4. 服务端同时校验 token 和空库条件，创建数据库中唯一的 `super_admin`。
 5. 初始化完成后删除生产 `BOOTSTRAP_TOKEN`。

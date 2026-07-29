@@ -7,8 +7,9 @@
 
 ## 操作与证据
 
-- `npm run db:migrate:local`：`0001_initial.sql` 的 38 条命令执行成功。
-- `npm run check`：ESLint、TypeScript、17 条 Vitest、React Router 生产构建和
+- 隔离本地 D1 migration：`0001_initial.sql` 的 38 条命令和
+  `0002_pbkdf2_workers_compatibility.sql` 的 11 条命令连续执行成功；外键检查为空。
+- `npm run check`：ESLint、TypeScript、20 条 Vitest、React Router 生产构建和
   `wrangler deploy --dry-run` 全部通过。
 - HTTP：`/`、`/register`、`/setup`、`/api/health` 均返回 200。
 - MCP：`initialize` 返回协议 `2025-06-18`；`tools/list` 返回三个只读工具。
