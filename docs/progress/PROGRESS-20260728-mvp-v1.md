@@ -2,8 +2,9 @@
 
 ## 当前状态
 
-- 生产缺陷修复中：`https://mhxy.silvericekey.fun/` 和 `/rules` 返回 500，
-  `/api/health` 返回 200。
+- 生产 500 根因修复已推送：部署命令现会在发布前执行远端 D1 migration。
+  `https://mhxy.silvericekey.fun/` 仍待认证环境执行新部署；当前 `/` 和 `/rules`
+  返回 500，`/api/health` 返回 200。
 - 第一期 MVP 已完成本地开发和基础验收。
 - 已确认纯文本、先审后发、规则预审 + 人工终审。
 - 已确认不接入 AI 内容审核，不使用置信度阈值，不自动发布或自动作最终驳回。
@@ -55,6 +56,8 @@
 - 尚无真实审核样本和首个超管凭据。
 - Wrangler 未认证：`wrangler whoami` 明确返回未登录，且环境没有
   `CLOUDFLARE_API_TOKEN`；本地无法代为执行生产 migration、查看日志或重新部署。
+- GitHub 仓库没有 Actions workflow 和 Cloudflare repository secrets，无法从
+  GitHub 自动完成生产恢复。
 
 ## 未证实风险
 

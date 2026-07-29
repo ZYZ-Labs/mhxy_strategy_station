@@ -3,8 +3,8 @@
 ## 当前主任务
 
 - 设计并实现一个部署到 Cloudflare Workers 的梦幻西游攻略与交流站。
-- 当前阶段：第一期 MVP 已部署到 `https://mhxy.silvericekey.fun`，但页面请求出现
-  生产 500；正在修复部署流程遗漏远端 D1 migration 的问题。
+- 当前阶段：第一期 MVP 已部署到 `https://mhxy.silvericekey.fun`。部署流程遗漏
+  远端 D1 migration 的根因修复已推送；线上仍待有 Cloudflare 凭据的环境执行部署。
 
 ## 已确认边界
 
@@ -55,6 +55,8 @@
   不能声称规则召回率或误判率。
 - 当前环境 Wrangler 未登录且无 `CLOUDFLARE_API_TOKEN`，无法直接查看生产日志、
   检查远端表结构、执行 migration 或重新部署。
+- GitHub 仓库没有 Actions workflow，也没有配置 repository secrets，因此推送不会
+  自动执行 Cloudflare migration 或部署。
 - 线上 `/api/health` 返回 200，而所有经过共享页面布局的 `/`、`/rules` 返回 500；
   布局的首个强制依赖是 D1 注册策略。当前 `worker:deploy` 又没有执行远端 migration，
   因此根因定位为生产 schema 未随部署同步；远端表结构仍需在获得认证后复核。

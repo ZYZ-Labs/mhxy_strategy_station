@@ -45,5 +45,7 @@ npm run worker:deploy
 ## 剩余风险
 
 - 本地环境无法直接完成生产 migration 和部署，线上恢复状态必须在认证环境执行后确认。
+- 修复推送后连续 6 次检查 `/` 仍为 500；GitHub 仓库没有 Actions workflow 或
+  Cloudflare repository secrets，确认没有自动恢复通道。
 - 若远端实际问题是 D1 binding 指向错误数据库，而非空 schema，需要根据远端绑定和
   `sqlite_master` 结果纠正 `database_id`，不得迁移其他项目数据库。
