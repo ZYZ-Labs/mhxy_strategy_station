@@ -38,6 +38,7 @@
 - 路由：`app/routes.ts`
 - D1 migration：`migrations/0001_initial.sql`
 - MCP：`app/mcp/server.ts`
+- Worker 部署：`npm run worker:deploy`；`npm run deploy` 为兼容别名。
 - 架构：`docs/guides/GUIDE-20260728-project-architecture-v1.md`
 - 运行与接口：`docs/guides/GUIDE-20260729-operations-and-interface-v1.md`
 - 审核政策：`docs/guides/GUIDE-20260728-content-moderation-policy-v1.md`

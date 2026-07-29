@@ -24,6 +24,8 @@
 - 源码、migration、测试和文档已提交并推送到
   `https://github.com/ZYZ-Labs/mhxy_strategy_station.git` 的 `master`；远端原有
   Apache-2.0 `LICENSE` 已安全合并保留。
+- 已补充统一的 `npm run worker:deploy` 入口，执行“生产构建 + Wrangler 部署”；
+  原 `deploy` 保留为兼容别名，`npm run worker:deploy -- --dry-run` 已验证成功。
 
 ## 最近关键结论
 

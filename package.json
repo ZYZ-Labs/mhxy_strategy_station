@@ -19,7 +19,8 @@
     "check": "npm run lint && npm run typecheck && npm run test && npm run build && wrangler deploy --dry-run",
     "dev": "react-router dev",
     "preview": "npm run build && vite preview",
-    "deploy": "npm run build && wrangler deploy",
+    "worker:deploy": "npm run build && wrangler deploy",
+    "deploy": "npm run worker:deploy",
     "db:migrate:local": "wrangler d1 migrations apply DB --local",
     "db:migrate:remote": "wrangler d1 migrations apply mhxy-strategy-station --remote"
   },

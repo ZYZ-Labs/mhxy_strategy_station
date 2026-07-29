@@ -56,15 +56,25 @@ npm run dev
 
 ## 6. 生产部署
 
+项目统一的 Worker 部署入口为 `npm run worker:deploy`。该命令先执行 React Router
+生产构建，再使用构建产物重定向后的 Wrangler 配置部署 Worker。原有
+`npm run deploy` 保留为兼容别名。
+
 ```bash
 npm run check
 npx wrangler whoami
 npx wrangler d1 create mhxy-strategy-station
 npx wrangler d1 migrations apply mhxy-strategy-station --remote
 npx wrangler secret put BOOTSTRAP_TOKEN
-npm run deploy
+npm run worker:deploy
 ```
 
 创建 D1 后按 Wrangler 返回值把实际 `database_id` 写入 `wrangler.jsonc`，再执行远端
 migration。部署后验证 `/api/health`、`/register`、`/setup` 和 `/mcp`，并单独留下
 生产联调报告。
+
+不连接生产环境的命令验证：
+
+```bash
+npm run worker:deploy -- --dry-run
+```

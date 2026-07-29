@@ -53,6 +53,14 @@ npm run dev
 npm run check
 ```
 
+部署 Worker：
+
+```bash
+npm run worker:deploy
+```
+
+该脚本会先执行生产构建，再调用 Wrangler 部署；`npm run deploy` 是兼容别名。
+
 MCP Streamable HTTP 入口为 `/mcp`，工具固定为：
 
 - `list_published_guides`
