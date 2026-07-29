@@ -3,8 +3,8 @@
 ## 当前主任务
 
 - 设计并实现一个部署到 Cloudflare Workers 的梦幻西游攻略与交流站。
-- 当前阶段：第一期 MVP 本地实现与验收完成；Cloudflare 远端联调因环境未配置
-  `CLOUDFLARE_API_TOKEN` 尚未执行；源码已推送到 GitHub `master`。
+- 当前阶段：第一期 MVP 已部署到 `https://mhxy.silvericekey.fun`，但页面请求出现
+  生产 500；正在修复部署流程遗漏远端 D1 migration 的问题。
 
 ## 已确认边界
 
@@ -38,7 +38,8 @@
 - 路由：`app/routes.ts`
 - D1 migration：`migrations/0001_initial.sql`
 - MCP：`app/mcp/server.ts`
-- Worker 部署：`npm run worker:deploy`；`npm run deploy` 为兼容别名。
+- Worker 部署：`npm run worker:deploy`（构建 → 远端 D1 migration → 部署）；
+  `npm run worker:deploy:dry-run` 不连接远端，`npm run deploy` 为兼容别名。
 - 架构：`docs/guides/GUIDE-20260728-project-architecture-v1.md`
 - 运行与接口：`docs/guides/GUIDE-20260729-operations-and-interface-v1.md`
 - 审核政策：`docs/guides/GUIDE-20260728-content-moderation-policy-v1.md`
@@ -52,7 +53,10 @@
 - 超管转移与灾难恢复尚未纳入第一期普通管理流程，需要后续专项设计。
 - 尚未用真实攻略样本完成“投稿 → 规则预审 → 人工批准/退回 → MCP 可见性”浏览器验收，
   不能声称规则召回率或误判率。
-- 当前环境 Wrangler 未登录且无 `CLOUDFLARE_API_TOKEN`，不能创建/迁移远端 D1、
-  写入 `BOOTSTRAP_TOKEN` 或部署生产 Worker。
+- 当前环境 Wrangler 未登录且无 `CLOUDFLARE_API_TOKEN`，无法直接查看生产日志、
+  检查远端表结构、执行 migration 或重新部署。
+- 线上 `/api/health` 返回 200，而所有经过共享页面布局的 `/`、`/rules` 返回 500；
+  布局的首个强制依赖是 D1 注册策略。当前 `worker:deploy` 又没有执行远端 migration，
+  因此根因定位为生产 schema 未随部署同步；远端表结构仍需在获得认证后复核。
 - GitHub `ZYZ-Labs/mhxy_strategy_station` 的远端初始 Apache-2.0 `LICENSE` 已保留，
   本地 `master` 已与远端同步。

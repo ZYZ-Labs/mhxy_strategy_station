@@ -59,7 +59,12 @@ npm run check
 npm run worker:deploy
 ```
 
-该脚本会先执行生产构建，再调用 Wrangler 部署；`npm run deploy` 是兼容别名。
+该脚本按顺序执行生产构建、远端 D1 migration 和 Wrangler 部署；任一步失败都会停止
+部署。`npm run deploy` 是兼容别名。不连接远端资源的检查使用：
+
+```bash
+npm run worker:deploy:dry-run
+```
 
 MCP Streamable HTTP 入口为 `/mcp`，工具固定为：
 

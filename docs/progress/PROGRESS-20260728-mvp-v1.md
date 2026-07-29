@@ -2,6 +2,8 @@
 
 ## 当前状态
 
+- 生产缺陷修复中：`https://mhxy.silvericekey.fun/` 和 `/rules` 返回 500，
+  `/api/health` 返回 200。
 - 第一期 MVP 已完成本地开发和基础验收。
 - 已确认纯文本、先审后发、规则预审 + 人工终审。
 - 已确认不接入 AI 内容审核，不使用置信度阈值，不自动发布或自动作最终驳回。
@@ -24,11 +26,15 @@
 - 源码、migration、测试和文档已提交并推送到
   `https://github.com/ZYZ-Labs/mhxy_strategy_station.git` 的 `master`；远端原有
   Apache-2.0 `LICENSE` 已安全合并保留。
-- 已补充统一的 `npm run worker:deploy` 入口，执行“生产构建 + Wrangler 部署”；
-  原 `deploy` 保留为兼容别名，`npm run worker:deploy -- --dry-run` 已验证成功。
+- `npm run worker:deploy` 已调整为“生产构建 → 远端 D1 migration → Wrangler
+  部署”；`worker:deploy:dry-run` 用于不连接远端的检查，原 `deploy` 保留兼容。
 
 ## 最近关键结论
 
+- 500 只发生在访问 D1 的页面链路；纯 Worker 健康接口正常。部署产物已上线，
+  但现有 `worker:deploy` 只构建和部署，没有执行 `db:migrate:remote`。
+- 修复边界限定为部署顺序：构建 → 远端 D1 migration → Wrangler 部署，并增加
+  独立 dry-run 命令；不通过吞掉数据库错误掩盖未迁移 schema。
 - 公共页面、API 和 MCP 只能读取已发布内容。
 - 规则异常必须失败关闭，内容保持待审核。
 - 已发布内容编辑后，新修订通过审核前继续展示旧修订。
@@ -48,7 +54,7 @@
 
 - 尚无真实审核样本和首个超管凭据。
 - Wrangler 未认证：`wrangler whoami` 明确返回未登录，且环境没有
-  `CLOUDFLARE_API_TOKEN`；生产 D1、secret 和部署未执行。
+  `CLOUDFLARE_API_TOKEN`；本地无法代为执行生产 migration、查看日志或重新部署。
 
 ## 未证实风险
 

@@ -16,7 +16,7 @@
   布局正常。
 - `wrangler whoami`：返回未认证，并明确要求配置 `CLOUDFLARE_API_TOKEN`。
 - GitHub：远端初始 `LICENSE` 安全合并后推送 `master`，本地与远端引用一致。
-- 部署命令：`npm run worker:deploy -- --dry-run` 成功完成生产构建和 Wrangler
+- 部署命令：`npm run worker:deploy:dry-run` 成功完成生产构建和 Wrangler
   上传包检查，未连接或修改生产环境。
 
 ## 结论
