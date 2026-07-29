@@ -15,6 +15,7 @@
 - Chrome Headless 1440×1100 首页截图人工检查：导航、首屏、空状态和禁止内容提示
   布局正常。
 - `wrangler whoami`：返回未认证，并明确要求配置 `CLOUDFLARE_API_TOKEN`。
+- GitHub：远端初始 `LICENSE` 安全合并后推送 `master`，本地与远端引用一致。
 
 ## 结论
 

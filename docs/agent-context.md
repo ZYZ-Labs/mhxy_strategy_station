@@ -4,7 +4,7 @@
 
 - 设计并实现一个部署到 Cloudflare Workers 的梦幻西游攻略与交流站。
 - 当前阶段：第一期 MVP 本地实现与验收完成；Cloudflare 远端联调因环境未配置
-  `CLOUDFLARE_API_TOKEN` 尚未执行。
+  `CLOUDFLARE_API_TOKEN` 尚未执行；源码已推送到 GitHub `master`。
 
 ## 已确认边界
 
@@ -53,3 +53,5 @@
   不能声称规则召回率或误判率。
 - 当前环境 Wrangler 未登录且无 `CLOUDFLARE_API_TOKEN`，不能创建/迁移远端 D1、
   写入 `BOOTSTRAP_TOKEN` 或部署生产 Worker。
+- GitHub `ZYZ-Labs/mhxy_strategy_station` 的远端初始 Apache-2.0 `LICENSE` 已保留，
+  本地 `master` 已与远端同步。

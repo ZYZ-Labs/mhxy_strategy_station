@@ -21,6 +21,9 @@
   dry-run 均通过。
 - 首页、注册、初始化和健康检查 HTTP 验收通过；MCP `initialize` 与 `tools/list`
   响应通过；首页 1440×1100 Chrome 截图人工检查通过。
+- 源码、migration、测试和文档已提交并推送到
+  `https://github.com/ZYZ-Labs/mhxy_strategy_station.git` 的 `master`；远端原有
+  Apache-2.0 `LICENSE` 已安全合并保留。
 
 ## 最近关键结论
 
